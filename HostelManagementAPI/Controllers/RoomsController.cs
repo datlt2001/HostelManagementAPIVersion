@@ -39,7 +39,7 @@ namespace HostelManagementAPI.Controllers
                 return NotFound();
             }
             await repository.UpdateRoom(room);
-            return NoContent();
+            return Ok();
         }
 
         //PUT
@@ -52,7 +52,7 @@ namespace HostelManagementAPI.Controllers
                 return NotFound();
             }
             await repository.ActivateRoom(id);
-            return NoContent();
+            return Ok();
         }
 
         //PUT
@@ -65,7 +65,7 @@ namespace HostelManagementAPI.Controllers
                 return NotFound();
             }
             await repository.DenyRoom(id);
-            return NoContent();
+            return Ok();
         }
 
         //PUT
@@ -78,7 +78,18 @@ namespace HostelManagementAPI.Controllers
                 return NotFound();
             }
             await repository.PendingRoom(id);
-            return NoContent();
+            return Ok();
         }
+
+        //POST
+        [HttpPost]
+        public async Task<IActionResult> AddRoom([FromBody] Room room)
+        {
+            room.RoomId = 0;
+            await repository.AddRoom(room);
+            return Ok();
+        }
+
+
     }
 }

@@ -1,8 +1,5 @@
 ﻿using BusinessObject.BusinessObject;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository
@@ -12,5 +9,6 @@ namespace DataAccess.Repository
         Task AddRoomPic(RoomPic RoomPic);
         Task<IEnumerable<RoomPic>> GetRoomPicsOfARoom(int RoomId);
         Task DeleteRoomPic(RoomPic RoomPic);
+        Task<RoomPic> GetRoomPic(int id);
     }
 }
