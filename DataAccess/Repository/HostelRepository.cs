@@ -13,6 +13,8 @@ namespace DataAccess.Repository
         public async Task<Hostel> GetHostelByID(int id) => await HostelDAO.Instance.GetHostelByID(id);
 
         public async Task<IEnumerable<Hostel>> GetHostelsList() => await HostelDAO.Instance.GetHostelsList();
+        public async Task<IEnumerable<Hostel>> GetHostelsList2() => await HostelDAO.Instance.GetHostelsList2();
+
         public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id) => await HostelDAO.Instance.GetHostelsOfAnOwner(id);
 
         public async Task UpdateHostel(Hostel hostel) => await HostelDAO.Instance.UpdateHostel(hostel);

@@ -45,7 +45,7 @@ namespace HostelManagementAPI.Controllers
         }
         //POST: AccountsController/Accounts
         [HttpPost]
-        public async Task<IActionResult> PostAccount([FromForm] Account acc)
+        public async Task<IActionResult> PostAccount([FromBody] Account acc)
         {
             acc.UserId = 0;
             acc.IdCardNumberNavigation = null;
@@ -54,14 +54,14 @@ namespace HostelManagementAPI.Controllers
             await repository.AddAccount(acc);
             return Ok(acc);
         }
-        [HttpGet("Deactivate")]
+        [HttpPut("Deactivate/{id}")]
         public async Task<IActionResult> Deactivate(int id)
         {
             await repository.InactivateUser(id);
             return Ok();
         }
 
-        [HttpGet("Reactivate")]
+        [HttpPut("Reactivate/{id}")]
         public async Task<IActionResult> Reactivate(int id)
         {
             await repository.ActivateUser(id);
@@ -69,10 +69,10 @@ namespace HostelManagementAPI.Controllers
         }
 
         //GET: AccountsController/Delete/4
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            var acc = await repository .GetAccountByID(id);
+            var acc = await repository.GetAccountByID(id);
             if (acc == null)
             {
                 return NotFound();
@@ -82,8 +82,8 @@ namespace HostelManagementAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("id")]
-        public async Task<IActionResult> UpdateAccount(int id, [FromBody]Account acc)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAccount(int id, [FromBody] Account acc)
         {
             var aTmp = await repository.GetAccountByID(id);
             if (acc == null)
@@ -218,13 +218,13 @@ namespace HostelManagementAPI.Controllers
             }
 
             else
-            { 
+            {
                 err.Message = "Your account or password is incorrect. Try again!";
                 return Ok(err);
             }
             return Ok(result);
         }
-        
+
         [HttpGet("Logout")]
         public async Task<IActionResult> Logout()
         {
@@ -254,12 +254,12 @@ namespace HostelManagementAPI.Controllers
             }
             else if (CheckExist(Input.account.UserEmail))
             {
-                return new JsonResult(new { MessageExistEmail = "Email is existing. Please choose other email." }); 
+                return new JsonResult(new { MessageExistEmail = "Email is existing. Please choose other email." });
             }
             else if (IdExists(Input.account.IdCardNumber))
             {
                 return new JsonResult(new { MessageExistId = "ID is existing. Please choose other ID." });
-                
+
             }
             else if (!CheckDob(Input.account.Dob))
             {

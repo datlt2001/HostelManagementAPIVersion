@@ -35,9 +35,9 @@ namespace DataAccess.DAO
                 var HostelManagementContext = new HostelManagementContext();
                 HostelManagementContext.Attach(RoomPic).State = EntityState.Added;
                 int a = 3;
-                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagement].[dbo].[RoomPics] ON");
+                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagementDB].[dbo].[RoomPics] ON");
                 await HostelManagementContext.SaveChangesAsync();
-                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagement].[dbo].[RoomPics] OFF");
+                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagementDB].[dbo].[RoomPics] OFF");
             }
             catch (Exception ex)
             {

@@ -1,24 +1,16 @@
+using BusinessObject.BusinessObject;
+using DataAccess;
+using DataAccess.Repository;
+using HostelManagementAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using DataAccess.Repository;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using Microsoft.EntityFrameworkCore;
-using HostelManagementAPI.Helpers;
 
 namespace HostelManagementAPI
 {
@@ -36,15 +28,17 @@ namespace HostelManagementAPI
         {
 
             services.AddControllers();
-            services.AddControllers()
-            .AddJsonOptions(o => o.JsonSerializerOptions
-                .ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSession();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HostelManagementAPI", Version = "v1" });
             });
-            services.AddMvc();
+            services.AddMvc().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddDbContext<HostelManagementContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("HostelManagementContext")));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

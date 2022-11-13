@@ -1,10 +1,7 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HostelManagementAPI.Controllers
@@ -41,7 +38,7 @@ namespace HostelManagementAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRent(int id, [FromForm] Rent rent)
         {
             var aTmp = await repository.GetRentByID(id);

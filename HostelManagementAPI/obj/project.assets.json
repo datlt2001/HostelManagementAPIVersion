@@ -6171,23 +6171,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HP\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\HostelManagementAPI\\HostelManagementAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\HostelManagementAPI\\HostelManagementAPI.csproj",
       "projectName": "HostelManagementAPI",
-      "projectPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\HostelManagementAPI\\HostelManagementAPI.csproj",
-      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\HostelManagementAPI\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\HostelManagementAPI\\HostelManagementAPI.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\HostelManagementAPI\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6201,11 +6197,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {
-              "projectPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj"
+            "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj"
             },
-            "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\DataAccess\\DataAccess.csproj"
+            "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\DataAccess\\DataAccess.csproj"
             }
           }
         }
@@ -6263,7 +6259,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

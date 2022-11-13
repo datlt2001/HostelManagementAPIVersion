@@ -1,10 +1,7 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HostelManagementAPI.Controllers
@@ -18,9 +15,9 @@ namespace HostelManagementAPI.Controllers
         [HttpGet]
         public async Task<IEnumerable<Room>> GetRooms() => await repository.GetRoomList();
 
-        [HttpGet("GetRoomsOfAHostel/{id}")]
-        public async Task<IEnumerable<Room>> GetRoomsOfAHostel(int id) => await repository.GetRoomsOfAHostel(id);
-        
+        [HttpGet("GetRoomsOfAHostel")]
+        public async Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId) => await repository.GetRoomsOfAHostel(hostelId);
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRoomByID(int id)
         {
@@ -33,7 +30,7 @@ namespace HostelManagementAPI.Controllers
             return Ok(hostel);
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoom(int id, [FromForm] Room room)
         {
             var aTmp = await repository.GetRoomByID(id);

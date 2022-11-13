@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {}
+    "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {
+    "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj",
         "projectName": "BusinessObject",
-        "projectPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\source\\repos\\HostelManagementAPIVersion\\BusinessObject\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\BusinessObject.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\Documents\\GitHub\\HostelManagementAPIVersion\\BusinessObject\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -73,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }

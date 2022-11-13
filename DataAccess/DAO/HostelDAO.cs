@@ -73,14 +73,13 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Hostels
-                    .Include(h => h.Rooms)
+                    .Include(r => r.Rooms)
                     .Include(h => h.Category)
                     .Include(h => h.Location)
                         .ThenInclude(h => h.Ward)
                             .ThenInclude(h => h.District)
                                 .ThenInclude(h => h.Province)
                     .Include(h => h.HostelPics)
-                    .Include(h => h.HostelOwnerEmailNavigation)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -88,7 +87,21 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
-
+        public async Task<IEnumerable<Hostel>> GetHostelsList2()
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Hostels
+                    .Include(h => h.Category)
+                    .Include(h => h.HostelPics)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public async Task UpdateHostel(Hostel hostel)
         {
             try

@@ -11,6 +11,7 @@ namespace DataAccess.Repository
         Task DeleteHostel(Hostel hostel);
         Task AddHostel(Hostel hostel);
         Task<IEnumerable<Hostel>> GetHostelsList();
+        Task<IEnumerable<Hostel>> GetHostelsList2();
         Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id);
         Task DeactivateHostel(int id);
         Task ActivateHostel(int id);

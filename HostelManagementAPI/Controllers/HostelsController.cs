@@ -1,10 +1,7 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,7 +16,7 @@ namespace HostelManagementAPI
         //[Authorize(Roles = "Admin")]
         //GET: api/Hostels
         [HttpGet]
-        public async Task<IEnumerable<Hostel>> GetHostels() => await repository.GetHostelsList();
+        public async Task<IEnumerable<Hostel>> GetHostels() => await repository.GetHostelsList2();
         //GET
         [HttpGet("GetHostelsOfAnOwner/{id}")]
         public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id) => await repository.GetHostelsOfAnOwner(id);
@@ -88,7 +85,7 @@ namespace HostelManagementAPI
             return NoContent();
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHostel(int id, [FromForm] Hostel hostel)
         {
             var aTmp = await repository.GetHostelByID(id);
