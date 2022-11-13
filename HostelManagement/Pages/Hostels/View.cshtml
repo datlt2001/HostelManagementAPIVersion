@@ -1,0 +1,173 @@
+﻿@page
+@model HostelManagement.Pages.Hostels.ViewModel
+@{
+
+}
+
+<div class="container main-container" id="main-content">
+    <div class="row">
+        <div class="main-content col-12">
+            <div class="hostel-content">
+                <div class="hostel-header">
+                    <h2 class="hostel-title">@Model.Hostel.HostelName</h1>
+                    <span class="hostel-cate">@Model.Hostel.Category.CategoryName</span>
+                </div>
+                <div class="hostel-location"><a>@Model.Hostel.Location.Ward.WardName, @Model.Hostel.Location.Ward.District.DistrictName, @Model.Hostel.Location.Ward.District.Province.ProvinceName</a></div>
+                <div class="hostel-images">
+                    <div class="hostel-images-wrapper">
+                         @{
+                                string imgClass="";
+                                var imgs = Model.Hostel.HostelPics.Count-1;
+                                if (imgs <= 1) {
+                                    imgClass = "single-img"; 
+                                }
+                                else if (imgs < 3){
+                                    imgClass = "few-img";
+                                }
+                                else imgClass = "multiple-img";
+                            }
+                        <div class="hostel-imgs hostel-thumb @imgClass">
+                            @{
+                                var hostelThumb = "placeholder.png";
+                                if (Model.Hostel.HostelPics.Count>0){
+                                    hostelThumb = "hostels/"+Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl;
+                                }
+                            }
+                            <div class="img-wrapper">
+                                <div class="img"> 
+                                    <img src="~/images/@hostelThumb" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.Hostel.HostelPics.Count>4){
+                        <div class="hostel-imgs">
+                            <div class="imgs-wrapper">
+                                @for (int i = 1; i < 5;i++){
+                                <div class="img-item @imgClass">
+                                    <div class="img-wrapper"> 
+                                        <div class="img">
+                                            <img src="~/images/hostels/@Model.Hostel.HostelPics.ElementAt(i).HostelPicUrl" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="hostel-content-nav">
+
+                </div>
+
+                <div class="hostel-content-overview" id="overview">
+
+                </div>
+
+                <section class="room-selection" id="room">
+                    <div class="section-title">Select your room</div>
+                    @foreach (var item in Model.Rooms)
+                    {
+                    <div class="hostel-room">
+                        <div class="room-wrapper">
+                            <div class="room-title">
+                                <div class="room-title-left">@item.RoomTitle</div>
+                                <div class="room-title-right"></div>
+                            </div>
+                            <div class="room-content">
+                                <div class="room-content-wrapper">
+                                    <div class="room-info">
+                                        <p></p>
+                                        <div class="room-photos-container">
+                                            <div class="room-photo room-photo-thumb">
+                                                @{
+                                                    string roomThumb ="placeholder.png";
+                                                    if (item.RoomPics.Count >0)
+                                                        {
+                                                            roomThumb = "rooms/"+item.RoomPics.ElementAt(0).RoomPicUrl;
+                                                        }
+                                                }
+                                                <div>
+                                                    <img src="~/images/@roomThumb" alt="">
+                                                </div>
+                                            </div>
+                                            @if (item.RoomPics.Count>2){
+                                                <div class="room-photo room-photo-others">
+                                                    <div class="photo-small-wrapper">
+                                                        @for (int i = 1; i < item.RoomPics.Count; i++){
+                                                            var pic = item.RoomPics.ElementAt(i).RoomPicUrl;
+                                                            <div class="photo-item">
+                                                                <div class="photo">
+                                                                    <div>
+                                                                        <img src="~/images/rooms/@pic" alt="">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div>
+                                            <a class="see-room-info">Room photos and details</a>
+                                            <div class="room-description">
+                                                @item.RoomDescription
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="room-booking-details">
+                                        <div class="booking-details-inner">
+                                            <div class="booking-details-header">
+                                                <div class="header-item header-capacity p-2">Capacity</div>
+                                                <div class="header-item header-price">Price per month</div>
+                                                <div class="header-item header-book">Book</div>
+                                            </div>
+                                            <div class="booking-details">
+                                                <div class="booking-details-contents">
+                                                    <div class="booking-details-item details-capacity">
+                                                        <span>
+                                                            @item.RomMaxCapacity adults
+                                                            <i class='bx bx-male'></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="booking-details-item details-price">
+                                                        <div>
+                                                            <span class="currency">
+                                                                ₫
+                                                            </span>
+                                                            <span>@item.Price/month</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="booking-details-item details-book">
+                                                        <div class="bookButton">
+                                                            <div>
+                                                                <button class="btn btn-primary">
+                                                                    @if (Model.UserRole == "Renter")
+                                                                    {
+                                                                        <a asp-page="../Rents/Create" asp-route-id="@item.RoomId">Rent Now</a>
+                                                                    }
+
+                                                                    @if (String.IsNullOrEmpty(Model.UserRole))
+                                                                    {
+                                                                        <a asp-page="../Accounts/Login">Rent Now</a>
+                                                                    }
+                                                                    
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

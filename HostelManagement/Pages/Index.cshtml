@@ -1,0 +1,74 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<section class="search-section">
+    <div class="section-bg"></div>
+    <section class="section-searchbox">
+        <div class="searchbox-wrapper container">
+            <div class="welcome-text">
+                <div class="welcome-text-wrapper">
+                    <h1>
+                        FIND YOUR PERFECT RENTAL HOME
+                    </h1>
+                </div>
+            </div>
+            <div class="searchbox">
+                <form method="get" asp-page="/Search">
+                    <div class="search-wrapper">
+                        <div class="search-input">
+                            <div class="search-input-wrapper">
+                                <i class='bx bx-search'></i>
+                                <div class="search-input-inner">
+                                    <input type="text" name="searchKey" placeholder="Search place or hostel" class="input-search" autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selectbox select-location select-province">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bxs-city'></i>
+                                <div class="selectcontent">
+                                    <select name="sl_city" id="ProvinceList" asp-items="@ViewBag.ProvinceId">
+                                        <option selected value="">
+                                            City
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div><!--
+                        --><div class="selectbox select-location select-district">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bxs-building-house' ></i>
+                                <div class="selectcontent">
+                                    <select name="sl_dist" id="DistrictList">
+                                        <option selected value="">
+                                            District
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selectbox select-capacity">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bx-group' ></i>
+                                <div class="selectcontent">
+                                    <span data-target="capacityVal" data-value="1" class="display-capacity"></span>
+                                    <input type="hidden" name="capacity" value="1" class="input-capacity">
+                                    <div class="input-control btn-addnum">+</div>
+                                    <div class="input-control btn-subnum">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-btn-wrapper search-button">
+                        <button type="submit" class="btn-search">
+                            SEARCH
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</section>

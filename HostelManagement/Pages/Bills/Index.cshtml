@@ -1,0 +1,65 @@
+﻿@page
+@using System.Security.Claims
+
+@model HostelManagement.Pages.Bills.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Bill Management</h1>
+
+@if (ViewData["mailMessage"] != null)
+{
+    <p class="text-danger">@ViewData["mailMessage"]</p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.First().CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.First().DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.First().Rent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.First().Rent.Room.RoomTitle)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Bill)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rent.RentedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rent.Room.RoomTitle)
+                </td>
+                <td>
+                    @if (item.CreatedDate < item.DueDate)
+                    {
+                        <a asp-page-handler="SendMail" asp-route-id="@item.Rent.RentedBy" class="btn btn-danger">Mail Remind</a>
+
+                        <a asp-page="./Details" asp-route-id="@item.BillId">Details</a>
+                    }
+                    else
+                    {
+                        <a asp-page="./Details" asp-route-id="@item.BillId" class="btn btn-dark">Check</a>
+                    }
+
+            </tr>
+        }
+    </tbody>
+</table>

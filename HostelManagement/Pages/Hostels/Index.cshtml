@@ -1,0 +1,442 @@
+﻿@page "{handler?}"
+@using System.Security.Claims
+@model HostelManagement.Pages.Hostels.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    var activeNav = "listings-nav";
+    var Role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+    string role = null;
+    string clickEvent = "";
+    if (Role == "Owner") role = "owner";
+    else if (Role == "Admin") {role = "admin";}
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<section class="action-section searchbox-owner">
+    <div class="row">
+        <div class="col-4">
+            <form method="get" asp-page-handler="">
+                <div class="form-group">
+                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="@ViewData["searchHostel"]">
+                    <i class='bx bx-search'></i>
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-5">
+            <div class="action-button">
+                <button class="atn-btn btn-addnew">
+                    <a asp-page="Create">Add a listing</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="listings-hostel">
+    <div class="listings-hostel-tab">
+        <div class="listings-filter">
+            <div class="listings-filter-items">
+                @if(role.Equals("owner")){
+                <a class="listing-link-action" href="#/pending">Pending</a>}
+                <a class="listing-link-action listing-link-action-active" href="#/active">Active</a>
+                <a class="listing-link-action" href="#/deactivated">Deactivated</a>
+                <a class="listing-link-action" href="#/denied">Denied</a>
+            </div>
+        </div>
+    </div>
+    @if(role.Equals("owner")){
+    <div class="listings-hostel-wrapper" id="/pending">
+        @foreach (var item in Model.Hostels) {
+            @if (item.Status == 0){
+                <div class="hostel-listings-card mb-3">
+                    <div class="card-inner">
+                        @if (@item.HostelPics.Count > 0)
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                                    <text>
+                                                        <span class="card-status status-active">
+                                                            Active
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 2:
+                                                    <text>
+                                                        <span class="card-status status-inactive">
+                                                            Inactive
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 3:
+                                                    <text>
+                                                        <span class="card-status status-denied">
+                                                            Denied
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        default:
+                                                    <text>
+                                                        <span class="card-status status-pending">
+                                                            Pending
+                                                        </span>
+                                                    </text>
+                                            break;
+                                    }
+                                }
+                                <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                                @if (role.Equals("owner"))
+                                {
+                                    <div class="btn-card-action btn-card-edit">
+                                        <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                                            <i class='bx bx-edit'></i>
+                                        </a>
+                                    </div>
+
+                                    
+                                        var name = item.HostelName;
+                                    
+                                    <script type="text/javascript">
+                                        $('.btn-card-deactivate#@item.HostelId').click(function(){
+                                            $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId' class='selected-hostel'/>");
+                                            $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
+                                            $('.popup-deactivate').show();
+                                        })
+                                </script>
+                                }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    }
+    <div class="listings-hostel-wrapper" id="/active">
+        @foreach (var item in Model.Hostels) {
+            @if (item.Status == 1){
+                @if (role.Equals("admin"))
+                {
+                    clickEvent = "onclick=viewDetails("+@item.HostelId+")";
+                }
+                <div class="hostel-listings-card mb-3" @clickEvent>
+                    <div class="card-inner">
+                        @if (@item.HostelPics.Count > 0)
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                                    <text>
+                                                        <span class="card-status status-active">
+                                                            Active
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 2:
+                                                    <text>
+                                                        <span class="card-status status-inactive">
+                                                            Inactive
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 3:
+                                                    <text>
+                                                        <span class="card-status status-denied">
+                                                            Denied
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        default:
+                                                    <text>
+                                                        <span class="card-status status-pending">
+                                                            Pending
+                                                        </span>
+                                                    </text>
+                                            break;
+                                    }
+                                }
+                                <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            @if (role.Equals("owner"))
+                            {
+                                <div class="btn-card-action btn-card-edit">
+                                    <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                                        <i class='bx bx-edit'></i>
+                                    </a>
+                                </div>
+
+                                <div class="btn-card-action btn-card-deactivate" id="@item.HostelId">
+                                    <a>
+                                        <i class='bx bx-power-off'></i>
+                                    </a>
+                                </div>
+                                
+                                var name = item.HostelName;
+
+                                <script type="text/javascript">
+                                    $('.btn-card-deactivate#@item.HostelId').click(function(){
+                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId' class='selected-hostel'/>");
+                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
+                                $('.popup-deactivate').show();
+                                })
+                                </script>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="listings-hostel-wrapper" id="/deactivated">
+        @foreach (var item in Model.Hostels) {
+            @if (item.Status == 2){
+                 @if (role.Equals("admin"))
+                {
+                    clickEvent = "onclick=viewDetails("+@item.HostelId+")";
+                }
+                <div class="hostel-listings-card mb-3" @clickEvent>
+                    <div class="card-inner">
+                        @if (@item.HostelPics.Count > 0)
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                                    <text>
+                                                        <span class="card-status status-active">
+                                                            Active
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 2:
+                                                    <text>
+                                                        <span class="card-status status-inactive">
+                                                            Inactive
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 3:
+                                                    <text>
+                                                        <span class="card-status status-denied">
+                                                            Denied
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        default:
+                                                    <text>
+                                                        <span class="card-status status-pending">
+                                                            Pending
+                                                        </span>
+                                                    </text>
+                                            break;
+                                    }
+                                }
+                                <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            @if (role.Equals("owner"))
+                            {
+                                <div class="btn-card-action btn-card-edit">
+                                    <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                                        <i class='bx bx-edit'></i>
+                                    </a>
+                                </div>
+
+                                <div class="btn-card-action btn-card-activate" id="@item.HostelId">
+                                    <a>
+                                        <i class='bx bx-power-off'></i>
+                                    </a>
+                                </div>
+                                
+                                    var name = item.HostelName;
+                                
+                                <script type="text/javascript">
+                                    $('.btn-card-activate#@item.HostelId').click(function(){
+                                $('.reactivate-form').append("<input type='hidden' name='id' value='@item.HostelId' class='selected-hostel'/>");
+                                $('.popup-activate p').html('Do you really want to reactivate <strong>@name</strong>?');
+                                $('.popup-activate').show();
+                                })
+                                </script>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="listings-hostel-wrapper" id="/denied">
+        @foreach (var item in Model.Hostels) {
+            @if (item.Status == 3){
+                
+                clickEvent = "onclick=viewDetails("+@item.HostelId+")";
+                
+                <div class="hostel-listings-card mb-3" @clickEvent>
+                    <div class="card-inner">
+                        @if (@item.HostelPics.Count > 0)
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                                    <text>
+                                                        <span class="card-status status-active">
+                                                            Active
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 2:
+                                                    <text>
+                                                        <span class="card-status status-inactive">
+                                                            Inactive
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        case 3:
+                                                    <text>
+                                                        <span class="card-status status-denied">
+                                                            Denied
+                                                        </span>
+                                                    </text>
+                                            break;
+                                        default:
+                                                    <text>
+                                                        <span class="card-status status-pending">
+                                                            Pending
+                                                        </span>
+                                                    </text>
+                                            break;
+                                    }
+                                }
+                                <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            @if (role.Equals("owner"))
+                            {
+                                <div class="btn-card-action btn-card-edit">
+                                    <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                                        <i class='bx bx-edit'></i>
+                                    </a>
+                                </div>
+
+                                
+                                    var name = item.HostelName;
+                                
+                                <script type="text/javascript">
+                                    $('.btn-card-activate#@item.HostelId').click(function(){
+                                $('.reactivate-form').append("<input type='hidden' name='id' value='@item.HostelId' class='selected-hostel'/>");
+                                $('.popup-activate p').html('Do you really want to reactivate <strong>@name</strong>?');
+                                $('.popup-activate').show();
+                            })
+                            </script>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<div class="popup-form popup-deactivate">
+    <h3 class="mb-4">Deactivate hostel</h3>
+    <p>Do you really want to deactivate this hostel?</p>
+    <form method="post" class="deactivate-form" asp-page-handler="deactivate">
+    <div class="popup-action">
+        <button type="submit" class="btn btn-yes"><a>Yes</a></button>
+        <div class="btn btn-cancel">Cancel</div>
+    </div>
+    </form>
+</div>
+
+<div class="popup-form popup-activate">
+    <h3 class="mb-4">Activate hostel</h3>
+    <p>Do you really want to reactivate this hostel?</p>
+    <form method="post" class="reactivate-form" asp-page-handler="reactivate">
+    <div class="popup-action">
+        <button type="submit" class="btn btn-yes"><a>Yes</a></button>
+        <div class="btn btn-cancel">Cancel</div>
+    </div>
+    </form>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    $('#@activeNav').addClass('active');
+    $('.btn-cancel').click(function(){
+        $(event.target).parent().closest('.popup-form').hide();
+        $('.selected-hostel').remove();
+    });
+    $('.listing-link-action').click(function(){
+        $('.listing-link-action').removeClass('listing-link-action-active');
+        $(event.target).addClass('listing-link-action-active');
+
+        var content = $(event.target).attr('href');
+        let selector = content.substring(1);
+        $('.listings-hostel-wrapper').hide()
+        $('#'+ $.escapeSelector(selector)).show();
+    });
+
+    $(window).on('load',function(){
+        $('.listings-hostel-wrapper').hide();
+        let content = $('.listing-link-action-active').attr('href');
+        let selector = content.substring(1);
+        $('#'+ $.escapeSelector(selector)).show();
+    })
+    @if (role.Equals("admin"))
+    {
+        <text>
+        function viewDetails(id) {
+            if (id != undefined && id != null) {
+                window.location = '../Hostels/Details?id=' + id;
+            }
+        }
+        </text>
+    }
+</script>
+}

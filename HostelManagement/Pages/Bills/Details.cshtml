@@ -1,0 +1,120 @@
+﻿@page
+@using System.Security.Claims
+@model HostelManagement.Pages.Bills.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+}
+
+<div class="container main-container">
+    <div class="room-card-wrapper">
+        <div class="room-card d-flex">
+            <div class="room-thumb col-2">
+                <div class="img">
+                    @{
+                        var roomThumb = "placeholder.png";
+                        if (@Model.Bill.Rent.Room.RoomPics.Count>0)
+                        {
+                            roomThumb = "rooms/" + @Model.Bill.Rent.Room.RoomPics.ElementAt(0).RoomPicUrl;
+                        }
+                    }
+                    <img src="~/images/@roomThumb" alt="">
+                </div>
+            </div>
+            <div class="room-title col-6">
+                <a asp-page="../Rents/Details" asp-route-id="@Model.Bill.Rent.RentId">@Model.Bill.Rent.Room.RoomTitle</a>
+                <div class="hostel-info-small">@Model.Bill.Rent.Room.Hostel.HostelName</div>
+            </div>
+            <div class="room-renter col-4 py-3">@Model.Bill.Rent.RentedByNavigation.UserEmail</div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <h4>Bill No. @Model.Bill.BillId</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Bill.CreatedDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Bill.CreatedDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Bill.DueDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Bill.DueDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Bill.Rent)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Bill.Rent.RentedBy)
+            </dd>
+        </dl>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.Bill.BillDetails.First().BillDescription)
+                </th>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.Bill.BillDetails.First().Fee)
+                </th>
+                <th class="col-2">
+                    @Html.DisplayNameFor(model => model.Bill.BillDetails.First().DateIssued)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Bill.BillDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillDescription)
+                    </td>
+                    <td>
+                        <span class="currency">₫</span>@Html.DisplayFor(modelItem => item.Fee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateIssued)
+                    </td>
+                </tr>
+            }
+            <hr>
+            <tr>
+                <td class="col-2">
+                    <h3>Total bill</h3>
+                </td>
+                <td class="col-2">
+                    <h3><b><span class="currency">₫@ViewData["sum"]</span></b></h3>
+                </td class="col-2">
+                <td>
+                    @if (Model.Bill.DueDate > Model.Bill.CreatedDate)
+                    {
+                        <button class="btn btn-danger">NOT PAID</button>
+                        @if (role == "Renter")
+                        {
+                            <a asp-page-handler="Check" asp-route-id="@Model.Bill.BillId" class="btn btn-danger">Already paid?</a>
+                        }
+
+                    }
+                    @if (Model.Bill.DueDate < Model.Bill.CreatedDate)
+                    {
+                        <button class="btn btn-danger">CHECKING</button>
+                        @if (role == "Owner")
+                        {
+                            <a asp-page-handler="Confirm" asp-route-id="@Model.Bill.BillId" class="btn btn-outline-dark">Comfirm paid</a>
+                            <a asp-page-handler="NotConfirm" asp-route-id="@Model.Bill.BillId" class="btn btn-outline-dark">Not paid</a>
+                        }
+                    }
+                    @if (Model.Bill.DueDate == Model.Bill.CreatedDate)
+                    {
+                        <button class="btn btn-danger">PAID</button>
+                    }
+            </tr>
+        </tbody>
+    </table>
+</div>

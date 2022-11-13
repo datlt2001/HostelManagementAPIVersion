@@ -1,0 +1,136 @@
+﻿@page
+@model HostelManagement.Pages.Rooms.InsertModel
+@{
+}
+<section class="listings-hostel edit-listings">
+    <div class="listings-hostel-wrapper">
+
+        <div class="hostel-listings-card">
+            <div class="card-inner">
+                @if (@Model.hostel.HostelPics.Count > 0)
+                {
+                    <div class="card-img-thumb" style="background: url('../images/hostels/@Model.hostel.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                }
+                else
+                {
+                    <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                }
+                <div class="card-details">
+                    <div class="card-info">
+                        <div class="card-title">[@Model.hostel.Category.CategoryName] @Model.hostel.HostelName</div>
+                        @{
+                            switch (@Model.hostel.Status)
+                            {
+                                case 1:
+                                    <text>
+                                        <span class="card-status status-active">
+                                            Active
+                                        </span>
+                                    </text>
+                                    break;
+                                case 2:
+                                    <text>
+                                        <span class="card-status status-inactive">
+                                            Inactive
+                                        </span>
+                                    </text>
+                                    break;
+                                case 3:
+                                    <text>
+                                        <span class="card-status status-denied">
+                                            Denied
+                                        </span>
+                                    </text>
+                                    break;
+                                default:
+                                    <text>
+                                        <span class="card-status status-pending">
+                                            Pending
+                                        </span>
+                                    </text>
+                                    break;
+                            }
+                        }
+                        <span class="card-location">@Model.hostel.Location.Ward.District.Province.ProvinceName, @Model.hostel.Location.Ward.District.DistrictName</span>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="btn-card-action btn-card-edit">
+                        <a asp-page="./View" asp-route-id="@Model.hostel.HostelId">
+                            Preview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<h1>Insert</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="roomform row" >
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <span class="group-input-title" id="Room">Room</span>
+            <!--Room-->
+            <div class="roomform group-input-hostel">
+                <div class="form-group">
+                    <label asp-for="@Model.Room.RoomTitle" class="control-label"></label>
+                    <input asp-for="@Model.Room.RoomTitle" class="form-control"  required/>
+                    <span asp-validation-for="@Model.Room.RoomTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Room.RoomDescription" class="control-label"></label>
+                    <textarea asp-for="@Model.Room.RoomDescription" class="form-control"  style="height:200px"  required></textarea>
+                    <span asp-validation-for="@Model.Room.RoomDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Room.RomMaxCapacity" class="control-label"></label>
+                    <input asp-for="@Model.Room.RomMaxCapacity" class="form-control" required min="1" max="20"/>
+                    <span asp-validation-for="@Model.Room.RomMaxCapacity" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden="hidden">
+                    <label asp-for="@Model.Room.RoomCurrentCapacity" class="control-label"></label>
+                    <input asp-for="@Model.Room.RoomCurrentCapacity" class="form-control" value="0" readonly/>
+                    <span asp-validation-for="@Model.Room.RoomCurrentCapacity" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden="hidden">
+                    <label asp-for="@Model.Room.Status" class="control-label"></label>
+                    <input asp-for="@Model.Room.Status" class="form-control" value="0" />
+                    <span asp-validation-for="@Model.Room.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Price / Month</label>
+                    <input asp-for="@Model.Room.Price" class="form-control" required min="100000"/>
+                    <span asp-validation-for="@Model.Room.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Room.Deposit" class="control-label"></label>
+                    <input asp-for="@Model.Room.Deposit" class="form-control" required min="0"/>
+                    <span asp-validation-for="@Model.Room.Deposit" class="text-danger"></span>
+                </div>
+                <span class="group-input-title" id="Images">Upload some images of this room</span>
+                <div class="group-input-hostel">
+                    <div class="form-group">
+                        <label>Room Images <p class="text-danger">(Required)</p></label>
+                        <input asp-for="@Model.FileUploads" />
+                        <span asp-validation-foraction="@Model.FileUploads"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Insert" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
