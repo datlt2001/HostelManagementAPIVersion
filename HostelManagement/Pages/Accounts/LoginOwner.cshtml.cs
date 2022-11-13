@@ -1,12 +1,17 @@
-using BusinessObject.BusinessObject;
+﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Accounts
@@ -14,9 +19,15 @@ namespace HostelManagement.Pages.Accounts
     public class LoginOwnerModel : PageModel
     {
         private IAccountRepository accountRepository { get; }
+        private readonly HttpClient client = null;
+        private string AccountApiUrl = "";
         public LoginOwnerModel(IAccountRepository _accountRepository)
         {
-            accountRepository = _accountRepository;
+            accountRepository = _accountRepository; 
+            client = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            client.DefaultRequestHeaders.Accept.Add(contentType);
+            AccountApiUrl = "https://localhost:44376/api/Accounts/Login";
         }
 
         [BindProperty]
@@ -34,26 +45,42 @@ namespace HostelManagement.Pages.Accounts
         }
         public async Task<IActionResult> OnPost()
         {
+            //Task<Account> acc = accountRepository.GetLoginAccount(Account.UserEmail, Account.UserPassword);
+            var httpRequestMessage = new HttpRequestMessage();
+            httpRequestMessage.Method = HttpMethod.Post;
+            httpRequestMessage.RequestUri = new Uri(AccountApiUrl);
 
-            Task<Account> acc = accountRepository.GetLoginAccount(Account.UserEmail, Account.UserPassword);
-            if (acc.Result == null)
+            // Tạo StringContent
+            string jsoncontent = "{\"userEmail\": \"" + Account.UserEmail + "\", \"userPassword\": \"" + Account.UserPassword + "\"}";
+            var httpContent = new StringContent(jsoncontent, Encoding.UTF8, "application/json");
+            httpRequestMessage.Content = httpContent;
+
+            HttpResponseMessage response = await client.SendAsync(httpRequestMessage);
+            string strData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            Account acc = JsonSerializer.Deserialize<Account>(strData, options);
+
+            if (acc == null)
             {
                 message = "Your account or password is incorrect. Try again!";
                 return Page();
             }
-            else if (acc.Result.Status != 1)
+            else if (acc.Status != 1)
             {
                 message = "Your account is locked!";
                 return Page();
             }
-            else if (acc.Result.RoleName.Equals("admin"))
+            else if (acc.RoleName.Equals("admin"))
             {
                 var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
+                            new Claim(ClaimTypes.NameIdentifier, acc.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Admin"),
-                            new Claim(ClaimTypes.Name, acc.Result.FullName),
-                            new Claim(ClaimTypes.Email, acc.Result.UserEmail)
+                            new Claim(ClaimTypes.Name, acc.FullName),
+                            new Claim(ClaimTypes.Email, acc.UserEmail)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -74,14 +101,14 @@ namespace HostelManagement.Pages.Accounts
                 return RedirectToPage("index"); //return AdminDashboard
 
             }
-            else if (acc.Result.RoleName.Equals("owner"))
+            else if (acc.RoleName.Equals("owner"))
             {
                 var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
+                            new Claim(ClaimTypes.NameIdentifier, acc.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Owner"),
-                            new Claim(ClaimTypes.Name, acc.Result.FullName),
-                            new Claim(ClaimTypes.Email, acc.Result.UserEmail)
+                            new Claim(ClaimTypes.Name, acc.FullName),
+                            new Claim(ClaimTypes.Email, acc.UserEmail)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -102,14 +129,14 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
                 return RedirectToPage("../HostelOwnerDashboard");
             }
-            else if (acc.Result.RoleName.Equals("renter"))
+            else if (acc.RoleName.Equals("renter"))
             {
                 var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
+                            new Claim(ClaimTypes.NameIdentifier, acc.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Owner"),
-                            new Claim(ClaimTypes.Name, acc.Result.FullName),
-                            new Claim(ClaimTypes.Email, acc.Result.UserEmail)
+                            new Claim(ClaimTypes.Name, acc.FullName),
+                            new Claim(ClaimTypes.Email, acc.UserEmail)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(

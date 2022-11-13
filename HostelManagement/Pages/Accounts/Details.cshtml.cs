@@ -41,8 +41,8 @@ namespace HostelManagement.Pages.Accounts
             {
                 return NotFound();
             }
-            Account = await _accountRepository.GetAccountByID(id.Value);
-            /*HttpResponseMessage response = await client.GetAsync(AccountApiUrl+id);
+            //Account = await _accountRepository.GetAccountByID(id.Value);
+            HttpResponseMessage response = await client.GetAsync(AccountApiUrl + id);
             string strData = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
@@ -53,7 +53,7 @@ namespace HostelManagement.Pages.Accounts
             ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");
             ViewData["FrontPic"] = new SelectList(_context.IdentityCards, "FrontIdPicUrl", "FrontIdPicUrl");
             ViewData["BackPic"] = new SelectList(_context.IdentityCards, "BackIdPicUrl", "BackIdPicUrl");
-*/
+
             if (Account == null)
             {
                 return NotFound();

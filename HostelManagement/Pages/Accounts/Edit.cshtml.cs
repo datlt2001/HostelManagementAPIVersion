@@ -11,6 +11,7 @@ using DataAccess;
 using Microsoft.AspNetCore.Http;
 using HostelManagement.Helpers;
 using DataAccess.Repository;
+using System.Net.Http;
 
 namespace HostelManagement.Pages.Accounts
 {
@@ -18,6 +19,8 @@ namespace HostelManagement.Pages.Accounts
     {
         private IAccountRepository _accountRepository { get; }
         private IIdentityCardRepository _identityCardRepository { get; }
+        private readonly HttpClient client = null;
+        private string AccountApiUrl = "";
 
         public EditModel(IAccountRepository accountRepository, IIdentityCardRepository identityCardRepository)
         {

@@ -38,26 +38,23 @@ namespace HostelManagement.Pages.Accounts
         public IList<Account> Accounts { get; set; }
         public async Task<IActionResult> OnPost()
         {
-            Account acc = await accountRepository.GetLoginAccount(Account.UserEmail, Account.UserPassword);
-            /*var httpRequestMessage = new HttpRequestMessage();
+            //Account acc = await accountRepository.GetLoginAccount(Account.UserEmail, Account.UserPassword);
+            var httpRequestMessage = new HttpRequestMessage();
             httpRequestMessage.Method = HttpMethod.Post;
             httpRequestMessage.RequestUri = new Uri(AccountApiUrl);
 
             // Tạo StringContent
-            string jsoncontent = "{\"UserEmail\": \" "+ Account.UserEmail + "\", \"UserPassword\": \"" + Account.UserPassword + "\"}";
+            string jsoncontent = "{\"userEmail\": \"" + Account.UserEmail + "\", \"userPassword\": \"" + Account.UserPassword + "\"}";
             var httpContent = new StringContent(jsoncontent, Encoding.UTF8, "application/json");
             httpRequestMessage.Content = httpContent;
-            *//*var content = new MultipartFormDataContent();
-            content.Add(new String("UserEmail"), Account.UserEmail);
-            content.Add(new StringContent("UserPassword"), Account.UserPassword);
-            *//*
+
             HttpResponseMessage response = await client.SendAsync(httpRequestMessage);
             string strData = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
-            Account acc = JsonSerializer.Deserialize<Account>(strData, options);*/
+            Account acc = JsonSerializer.Deserialize<Account>(strData, options);
             if (acc == null)
             {
                 message = "Your account or password is incorrect. Try again!";

@@ -41,15 +41,15 @@ namespace HostelManagement.Pages.Accounts
 
         public async Task OnGetAsync(string searchUser)
         {
-            Account = await _accountRepository.GetAccountList();
+            /*Account = await _accountRepository.GetAccountList();
             IEnumerable<Account> AccountSearch = Account;
             if (!String.IsNullOrEmpty(searchUser))
             {
                 Account = Account.Where(a => a.FullName.ToLower().Contains(searchUser.ToLower()) ||
                                             a.UserEmail.ToLower().Contains(searchUser.ToLower()))
                                         .ToList();
-            }
-            /*HttpResponseMessage response = await client.GetAsync(AccountApiUrl);
+            }*/
+            HttpResponseMessage response = await client.GetAsync(AccountApiUrl);
             string strData = await response.Content.ReadAsStringAsync();
             var options = new JsonSerializerOptions
             {
@@ -57,13 +57,13 @@ namespace HostelManagement.Pages.Accounts
             };
             Account = JsonSerializer.Deserialize<IEnumerable<Account>>(strData, options);
             IEnumerable<Account> AccountSearch = Account;
+            if (!String.IsNullOrEmpty(searchUser))
             {
                 Account = Account.Where(a => a.FullName.ToLower().Contains(searchUser.ToLower()) ||
                                             a.UserEmail.ToLower().Contains(searchUser.ToLower()))
                                         .ToList();
-            }*/
-            if (!String.IsNullOrEmpty(searchUser))
-                ViewData["searchUser"] = searchUser;
+            }
+            ViewData["searchUser"] = searchUser;
         }
         public async Task<IActionResult> OnPostDeactivate(int id)
         {
