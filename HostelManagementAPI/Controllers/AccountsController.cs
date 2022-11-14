@@ -23,7 +23,7 @@ namespace HostelManagementAPI.Controllers
         private IAccountRepository repository = new AccountRepository();
         private IIdentityCardRepository identityCardRepository = new IdentityCardRepository();
         //GET: api/Accounts
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
