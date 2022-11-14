@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace HostelManagementAPI
         //GET: api/Hostels
         [HttpGet]
         public async Task<IEnumerable<Hostel>> GetHostels() => await repository.GetHostelsList2();
+        [Authorize]
         //GET
         [HttpGet("GetHostelsOfAnOwner/{id}")]
         public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id) => await repository.GetHostelsOfAnOwner(id);
@@ -34,6 +36,7 @@ namespace HostelManagementAPI
             return NoContent();
         }
 
+        [Authorize]
         //PUT
         [HttpPut("ActivateHostel/{id}")]
         public async Task<IActionResult> ActivateHostel(int id)

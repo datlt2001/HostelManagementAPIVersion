@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace HostelManagementAPI.Controllers
 
             return Ok(hostel);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRoom(int id, [FromForm] Room room)
         {
@@ -41,7 +42,7 @@ namespace HostelManagementAPI.Controllers
             await repository.UpdateRoom(room);
             return Ok();
         }
-
+        [Authorize]
         //PUT
         [HttpPut("ActivateRoom/{id}")]
         public async Task<IActionResult> ActivateRoom(int id)
@@ -54,7 +55,7 @@ namespace HostelManagementAPI.Controllers
             await repository.ActivateRoom(id);
             return Ok();
         }
-
+        [Authorize]
         //PUT
         [HttpPut("DenyRoom/{id}")]
         public async Task<IActionResult> DenyRoom(int id)
@@ -67,7 +68,7 @@ namespace HostelManagementAPI.Controllers
             await repository.DenyRoom(id);
             return Ok();
         }
-
+        [Authorize]
         //PUT
         [HttpPut("PendingRoom/{id}")]
         public async Task<IActionResult> PendingRoom(int id)
@@ -80,7 +81,7 @@ namespace HostelManagementAPI.Controllers
             await repository.PendingRoom(id);
             return Ok();
         }
-
+        [Authorize]
         //POST
         [HttpPost]
         public async Task<IActionResult> AddRoom([FromBody] Room room)

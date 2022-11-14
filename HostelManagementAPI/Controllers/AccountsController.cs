@@ -5,6 +5,7 @@ using DataAccess.Repository;
 using HostelManagementAPI.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +23,7 @@ namespace HostelManagementAPI.Controllers
         private IAccountRepository repository = new AccountRepository();
         private IIdentityCardRepository identityCardRepository = new IdentityCardRepository();
         //GET: api/Accounts
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -29,7 +31,7 @@ namespace HostelManagementAPI.Controllers
             if (isSuccessResult == null) return BadRequest();
             return Ok(isSuccessResult);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string searchUser)
         {
@@ -43,9 +45,11 @@ namespace HostelManagementAPI.Controllers
             if (isSuccessResult == null) return BadRequest();
             return Ok(isSuccessResult);
         }
+
+
         //POST: AccountsController/Accounts
         [HttpPost]
-        public async Task<IActionResult> PostAccount([FromBody] Account acc)
+        public async Task<IActionResult> PostAccount([FromForm] Account acc)
         {
             acc.UserId = 0;
             acc.IdCardNumberNavigation = null;
@@ -54,20 +58,22 @@ namespace HostelManagementAPI.Controllers
             await repository.AddAccount(acc);
             return Ok(acc);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("Deactivate/{id}")]
         public async Task<IActionResult> Deactivate(int id)
         {
             await repository.InactivateUser(id);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("Reactivate/{id}")]
         public async Task<IActionResult> Reactivate(int id)
         {
             await repository.ActivateUser(id);
             return Ok();
         }
-
+        [Authorize(Roles = "Admin")]
         //GET: AccountsController/Delete/4
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
@@ -81,7 +87,7 @@ namespace HostelManagementAPI.Controllers
             await repository.DeleteAccount(acc);
             return NoContent();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAccount(int id, [FromBody] Account acc)
         {

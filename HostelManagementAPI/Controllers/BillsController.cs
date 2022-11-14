@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +15,7 @@ namespace HostelManagementAPI.Controllers
     public class BillsController : ControllerBase
     {
         private IBillRepository _billRepository = new BillRepository();
-
+        [Authorize]
         //GET: api/Accounts
         [HttpGet]
         public async Task<IActionResult> GetBillList()
@@ -23,7 +24,7 @@ namespace HostelManagementAPI.Controllers
             if (isSuccessResult == null) return BadRequest();
             return Ok(isSuccessResult);
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBillById(int id)
         {
@@ -35,14 +36,14 @@ namespace HostelManagementAPI.Controllers
 
             return Ok(bill);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> PostBill([FromForm] Bill bill)
         {
             await _billRepository.AddBill(bill);
             return Ok(bill);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBill(int id, [FromForm] Bill bill)
         {

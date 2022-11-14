@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +15,7 @@ namespace HostelManagementAPI.Controllers
     public class BillDetailsController : ControllerBase
     {
         private IBillDetailRepository _billDetailRepository = new BillDetailRepository();
-
+        [Authorize(Roles = "Admin")]
         //GET: api/Accounts
         [HttpGet]
         public async Task<IActionResult> GetBillDetailList()
@@ -23,7 +24,7 @@ namespace HostelManagementAPI.Controllers
             if (isSuccessResult == null) return BadRequest();
             return Ok(isSuccessResult);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> PostBillDetail([FromForm] BillDetail billDetail)
         {

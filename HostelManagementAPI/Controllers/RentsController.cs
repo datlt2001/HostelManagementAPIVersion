@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,13 +12,14 @@ namespace HostelManagementAPI.Controllers
     public class RentsController : ControllerBase
     {
         private IRentRepository repository = new RentRepository();
-
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<Rent>> GetRentList() => await repository.GetRentList();
+        [Authorize]
         //GET
         [HttpGet("GetRentListByRoom/{id}")]
         public async Task<IEnumerable<Rent>> GetRentListByRoom(int id) => await repository.GetRentListByRoom(id);
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRentByID(int id)
         {
@@ -29,7 +31,7 @@ namespace HostelManagementAPI.Controllers
 
             return Ok(rent);
         }
-
+        [Authorize]
         //POST: RentsController/Rents
         [HttpPost]
         public async Task<IActionResult> PostRent([FromForm] Rent rent)
@@ -37,7 +39,7 @@ namespace HostelManagementAPI.Controllers
             await repository.AddRent(rent);
             return Ok();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRent(int id, [FromForm] Rent rent)
         {

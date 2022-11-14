@@ -84,11 +84,29 @@ namespace HostelManagementAPI
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGet("/testmail", async context =>
+                {
+
+                    var sendmailservice = context.RequestServices.GetService<ISendMailService>();
+
+                    MailContent content = new MailContent
+                    {
+                        To = "thanhdat3001@gmail.com",
+                        Subject = "Test",
+                        Body = "<p><strong>HIIIII</strong></p>"
+                    };
+
+                    await sendmailservice.SendMail(content);
+                    await context.Response.WriteAsync("Send mail");
+                });
             });
         }
     }
